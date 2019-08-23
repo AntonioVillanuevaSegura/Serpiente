@@ -47,6 +47,7 @@ int main(){
 	initscr(); 	
 	//WINDOW *pantalla;
 	nodelay(stdscr,true);
+	noecho();
 
 	//Crea la serpiente y le da una direccion
 
@@ -64,6 +65,28 @@ int main(){
            
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		//Direccion de la cabeza
+		switch (direccion){
+			case KEY_RIGHT:cabeza={cabeza.y,cabeza.x+1}; break;
+			case KEY_LEFT:cabeza={cabeza.y,cabeza.x-1}; break;
+			case KEY_DOWN:cabeza={cabeza.y-1,cabeza.x}; break;
+			case KEY_UP:cabeza={cabeza.y+1,cabeza.x}; break;									
+		}
+/*		
+        # find next position of snake head
+        head = snake[0]
+        if direction == curses.KEY_RIGHT:
+            new_head = [head[0], head[1]+1]
+        elif direction == curses.KEY_LEFT:
+            new_head = [head[0], head[1]-1]
+        elif direction == curses.KEY_DOWN:
+            new_head = [head[0]+1, head[1]]
+        elif direction == curses.KEY_UP:
+            new_head = [head[0]-1, head[1]]		
+*/		
+		
+		
+		
+		
 		
 		imprimeSerpiente(serpiente);
 		pantalla();
