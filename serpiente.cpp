@@ -1,4 +1,4 @@
-*
+/*
  * Antonio Villanueva Segura
  * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
  * instalar ncurses  sudo apt-get install libncurses5-dev libncursesw5-dev
