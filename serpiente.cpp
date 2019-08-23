@@ -39,13 +39,14 @@ void imprimeSerpiente(vector <punto> serpiente){
 }
 
 int main(){	
-	timeout (1); //Evita esperar getch()
+
 	vector  <punto> serpiente;
 	int direccion=KEY_RIGHT;//Direccion inicial de la serpiente
 	int key ;
 	punto cabeza;
 	initscr(); 	
 	//WINDOW *pantalla;
+	nodelay(stdscr,true);
 
 	//Crea la serpiente y le da una direccion
 
@@ -58,9 +59,10 @@ int main(){
 		key = getch();//Lee teclas
 
         if (key ==KEY_RIGHT or key ==KEY_LEFT or key ==KEY_DOWN or key ==KEY_UP){
-            direccion = key;		
+      direccion = key;		
            }
-		cabeza=
+           
+		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		//Direccion de la cabeza
 		
 		imprimeSerpiente(serpiente);
