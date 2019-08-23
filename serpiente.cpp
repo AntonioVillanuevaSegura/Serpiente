@@ -31,8 +31,9 @@ punto crea_comida(){
 }
 
 void imprimeSerpiente(vector <punto> serpiente){
+	//Imprime el vector serpiente
 	while (!serpiente.empty()){
-		mvwprintw (stdscr,int (serpiente.back).y,int (serpiente.back.x),"#");
+		mvwprintw (stdscr,serpiente.back().y,serpiente.back().x,"#");
 		serpiente.pop_back();
 	}
 }
@@ -46,17 +47,16 @@ int main(){
 
 
 	//Crea la serpiente y le da una direccion
-	//snake = [[sh//2, sw//2+1], [sh//2, sw//2], [sh//2, sw//2-1]]
 
 	serpiente.push_back({LINES/2,COLS/2+1});
 	serpiente.push_back({LINES/2,COLS/2});
 	serpiente.push_back({LINES/2,COLS/2-1});		
 
 
-	mvwprintw(stdscr,serpiente[0].y,serpiente[0].x,"#");
+	//mvwprintw(stdscr,serpiente[0].y,serpiente[0].x,"#");
 	
 	
-	
+	imprimeSerpiente(serpiente);
 	//pantalla();
 	getch();
 
