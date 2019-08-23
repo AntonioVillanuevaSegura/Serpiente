@@ -20,7 +20,7 @@ struct punto {int y;int x;}; //Un punto
 
 void pantalla(){
 
-	clear();
+	//clear();
 	box(stdscr,'*','*');//Crea borde 			
 	refresh();
 }
@@ -40,11 +40,10 @@ void imprimeSerpiente(vector <punto> serpiente){
 
 int main(){	
 	vector  <punto> serpiente;
-	int direccion=1;//Direccion de la serpiente
-
+	int direccion=KEY_RIGHT;//Direccion inicial de la serpiente
+	int key ;
 	initscr(); 	
 	//WINDOW *pantalla;
-
 
 	//Crea la serpiente y le da una direccion
 
@@ -52,12 +51,19 @@ int main(){
 	serpiente.push_back({LINES/2,COLS/2});
 	serpiente.push_back({LINES/2,COLS/2-1});		
 
-
-	//mvwprintw(stdscr,serpiente[0].y,serpiente[0].x,"#");
+	while (true){
+		//key = getch();//Tecla
+		
+        //
+        if (key ==KEY_RIGHT or key ==KEY_LEFT or key ==KEY_DOWN or key ==KEY_UP){
+            direccion = key;		
+           }
+		
+		
+		imprimeSerpiente(serpiente);
+		pantalla();
+	}
 	
-	
-	imprimeSerpiente(serpiente);
-	//pantalla();
 	getch();
 
 	
