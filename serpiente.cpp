@@ -1,4 +1,4 @@
-/*
+*
  * Antonio Villanueva Segura
  * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
  * instalar ncurses  sudo apt-get install libncurses5-dev libncursesw5-dev
@@ -39,9 +39,11 @@ void imprimeSerpiente(vector <punto> serpiente){
 }
 
 int main(){	
+	timeout (1); //Evita esperar getch()
 	vector  <punto> serpiente;
 	int direccion=KEY_RIGHT;//Direccion inicial de la serpiente
 	int key ;
+	punto cabeza;
 	initscr(); 	
 	//WINDOW *pantalla;
 
@@ -52,13 +54,14 @@ int main(){
 	serpiente.push_back({LINES/2,COLS/2-1});		
 
 	while (true){
-		//key = getch();//Tecla
-		
-        //
+
+		key = getch();//Lee teclas
+
         if (key ==KEY_RIGHT or key ==KEY_LEFT or key ==KEY_DOWN or key ==KEY_UP){
             direccion = key;		
            }
-		
+		cabeza=
+		//Direccion de la cabeza
 		
 		imprimeSerpiente(serpiente);
 		pantalla();
