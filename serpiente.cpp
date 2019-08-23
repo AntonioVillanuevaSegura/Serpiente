@@ -26,15 +26,15 @@ void pantalla(){
 }
 
 punto crea_comida(vector <punto> serpiente){
-	/*Crea la comida de la serpiente mirando de no caer en la serpiente */	
+	/*Crea la comida de la serpiente mirando de no caer en la serpiente o el borde */	
 	punto pto;
-	//Se puede obtener lo que hay en un punto de ncurses ?????
 	do {
-		pto={rand() % LINES +1,rand() % COLS +1};//Crea una comida aleatoria
+		pto={rand() % (LINES-1),rand() % (COLS-1) };//Crea una comida aleatoria
 	}
 		while (mvinch(pto.y, pto.x)& A_CHARTEXT!=32);
 
-	
+	mvwprintw (stdscr,pto.x,pto.y,"o");//Crea una comida *
+
 	return pto;
 }
 
@@ -70,6 +70,7 @@ int main(){
 	
 
 	pantalla();//Imprime los bordes de la pantalla
+	crea_comida (serpiente);
 	while (true){//Bucle principal del juego 
 		
 		usleep(200000);//Retardo del movimiento de la serpiente
@@ -80,7 +81,7 @@ int main(){
 			direccion = key;}
            
 		//mvwprintw(stdscr,2,2,(to_string(direccion)).c_str());//DEBUG TECLA PULSADA
-      	mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG TECLA PULSADA     
+      	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto   
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		
 		switch (direccion){	//Direccion y manipulacion de la cabeza			
@@ -89,9 +90,14 @@ int main(){
 			case KEY_DOWN:cabeza={cabeza.y+1,cabeza.x}; break;//valor direccion 258
 			case KEY_UP:cabeza={cabeza.y-1,cabeza.x}; break;//valor direccion 259									
 		}
+		
+		
 			
 		serpiente.push_back(cabeza);//Pegamos la nueva cabeza , un nuevo elemento
-		imprimeSerpiente(serpiente);//Imprime la serpiente	
+		//imprimeSerpiente(serpiente);//Imprime la serpiente	
+		
+		
+		
 			
 		serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
 
