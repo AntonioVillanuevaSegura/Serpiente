@@ -25,17 +25,24 @@ void pantalla(){
 	//refresh();
 }
 
-punto crea_comida(vector <punto> serpiente){
+punto crea_comida(vector <punto> &serpiente){
 	/*Crea la comida de la serpiente mirando de no caer en la serpiente o el borde */	
 	punto pto;
 	do {
-		pto={rand() % (LINES-1),rand() % (COLS-1) };//Crea una comida aleatoria
+		pto={2+ rand() % (LINES-2),2+ rand() % (COLS-2) };//Crea una comida aleatoria
 	}
 		while (mvinch(pto.y, pto.x)& A_CHARTEXT!=32);
 
-	mvwprintw (stdscr,pto.x,pto.y,"o");//Crea una comida *
+	mvwprintw (stdscr,pto.y,pto.x,"$");//Crea una comida *
 
 	return pto;
+}
+
+bool come(punto &cabeza,punto &comida){//Ha comido ? 
+	if (cabeza.y==comida.y && cabeza.x==comida.x ){
+		return true;
+	}
+	return false;
 }
 
 void imprimeSerpiente(vector <punto> serpiente){
@@ -53,7 +60,9 @@ int main(){
 	vector  <punto> serpiente;
 	int direccion(KEY_RIGHT);//Direccion inicial de la serpiente derecha
 	int key(KEY_RIGHT) ;//Lectura de teclas
+	int puntos(0);
 	punto cabeza;//Un punto y,x que contiene la cabeza de la serpiente
+	punto comida;//donde esta la comida
 	
 	initscr();//Inicio de ncurses , el entorno grafico
 	//configuraciones varias de ncurses 
@@ -70,7 +79,7 @@ int main(){
 	
 
 	pantalla();//Imprime los bordes de la pantalla
-	crea_comida (serpiente);
+	comida=crea_comida (serpiente);
 	while (true){//Bucle principal del juego 
 		
 		usleep(200000);//Retardo del movimiento de la serpiente
@@ -81,7 +90,9 @@ int main(){
 			direccion = key;}
            
 		//mvwprintw(stdscr,2,2,(to_string(direccion)).c_str());//DEBUG TECLA PULSADA
-      	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto   
+      	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto 
+      	
+      	mvwprintw( stdscr , 0, 2 , ( to_string (puntos).c_str() ));//MUESTRA PUNTOS CONSEGUIDOS comidas    
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		
 		switch (direccion){	//Direccion y manipulacion de la cabeza			
@@ -92,14 +103,14 @@ int main(){
 		}
 		
 		
-			
+		mvwprintw (stdscr,comida.y,comida.x,"$");//Visualiza comida		
 		serpiente.push_back(cabeza);//Pegamos la nueva cabeza , un nuevo elemento
-		//imprimeSerpiente(serpiente);//Imprime la serpiente	
-		
-		
-		
-			
+		imprimeSerpiente(serpiente);//Imprime la serpiente			
 		serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
+		
+		if (come(cabeza,comida)){
+			puntos++;
+			comida=crea_comida(serpiente);}
 
 		//pantalla();//Imprime la pantalla
 	}
