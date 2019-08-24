@@ -45,6 +45,23 @@ bool come(punto &cabeza,punto &comida){//Ha comido ?
 	return false;
 }
 
+bool muerta(vector <punto> serpiente){
+	//Choca con ella misma o los limites del juego
+	//Mira la cabeza
+	//Ha colisionado con los extremos ?
+	if (serpiente.back().x==0 ||serpiente.back().x==COLS ||
+		serpiente.back().y==0 ||serpiente.back().y==LINES){
+		return true;//Colision bordes
+	}
+	//Se muerde ella misma ?
+	for (auto elemento=serpiente.begin();elemento!=serpiente.end();elemento++){
+		if (*(elemento).x==serpiente.back().x && *(elemento).y==serpiente.back()->y){
+			return true;//Se muerde ella mista
+		}
+	}
+	
+	return false;
+}
 void imprimeSerpiente(vector <punto> serpiente){
 	//Imprime el vector serpiente exceptuando la cola que es vacio	
 	
@@ -108,9 +125,15 @@ int main(){
 		imprimeSerpiente(serpiente);//Imprime la serpiente			
 		serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
 		
+		if (muerta(serpiente)){
+			puntos=0;
+		}
+		
 		if (come(cabeza,comida)){
-			puntos++;
-			comida=crea_comida(serpiente);}
+			puntos++;//Incrementa puntos
+			comida=crea_comida(serpiente);//Crea una nueva comida
+			serpiente.push_back(cabeza);//La serpiente crece un elemento mas
+		}
 
 		//pantalla();//Imprime la pantalla
 	}
