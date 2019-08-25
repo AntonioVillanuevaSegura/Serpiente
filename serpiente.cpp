@@ -1,5 +1,6 @@
 /*
- * Antonio Villanueva Segura
+ * Antonio Villanueva Segura 
+ * JUEGO DE LA SERPIENTE ,SNAKE empleando ncurses y linux
  * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
  * instalar ncurses  sudo apt-get install libncurses5-dev libncursesw5-dev
  * compile and link: gcc <program file> -lncurses
@@ -11,87 +12,88 @@
 #include <random> //numeros aleatorios
 #include <ctime> //hora para generar numeros aleatorios
 #include <unistd.h> //usleep retardos
-
 #include <vector>//Creamos el cuerpo de la serpiente con un vector de ptos. 
 
+#define RETARDO 200000
+#define CUERPO "O"
+#define COMIDA "+"
 using namespace std;
 
-struct punto {int y;int x;}; //Definimos un punto una coordenada 
-
+struct punto {int y;int x;}; //Estructura Definiendo un punto una coordenada y,x
+//-------------------------------------------------------------------------------------
 void pantalla(){
 	//Crea los bordes del juego
-	//clear();
-	box(stdscr,'*','*');//Crea borde 			
+	clear();
+	//box(stdscr,'*','*');//Crea borde 			
+	box(stdscr, ACS_VLINE, ACS_HLINE);//Crea borde con lineas
+	//rectangle(stdscr, 2, 0, LINES, COLS);
 	//refresh();
 }
-
-punto crea_comida(vector <punto> &serpiente){
-	/*Crea la comida de la serpiente mirando de no caer en la serpiente o el borde */	
+//-------------------------------------------------------------------------------------
+punto creaComida(vector <punto> &serpiente){
+	/*Crea comida , evitando limites o el cuerpo de la serpiente  */	
 	punto pto;
 	do {
 		pto={2+ rand() % (LINES-3),2+ rand() % (COLS-3) };//Crea una comida aleatoria
 	}
 		while (mvinch(pto.y, pto.x)& A_CHARTEXT!=32);
 
-	mvwprintw (stdscr,pto.y,pto.x,"$");//Crea una comida *
+	//mvwprintw (stdscr,pto.y,pto.x,(string (COMIDA+"")).c_str());//Crea una comida *
+	mvwprintw (stdscr,pto.y,pto.x,"+");//Crea una comida *
 
 	return pto;
 }
-
-bool come(punto &cabeza,punto &comida){//Ha comido ? 
+//-------------------------------------------------------------------------------------
+bool serpienteCome(punto &cabeza,punto &comida){//La serpiente ha encontrado comida ? verdadero o falso
 	if (cabeza.y==comida.y && cabeza.x==comida.x ){
 		return true;
 	}
 	return false;
 }
-
-bool muerta(punto &cabeza){
-	//Choca con ella misma o los limites del juego
+//-------------------------------------------------------------------------------------
+bool estaMuerta(punto &cabeza){
+	//Choca con ella misma o  con los limites del juego y no es comida
 	//Mira la cabeza
-	//Ha colisionado con los extremos ?
-	
-	//La cabeza esta en un sitio que no es espacio o comida ???
-	//Hay que preveer 
 	
 	char objeto=mvinch(cabeza.y, cabeza.x)& A_CHARTEXT;//Cabeza
-	if ( objeto!=' ' && objeto !='$'){
+	if ( objeto!=' ' && objeto !=(const char) COMIDA[0]){
 		return true;
 	}
 	
-	
-	
-	/*
-	if (serpiente.back().x==0 ||serpiente.back().x==COLS ||
-		serpiente.back().y==0 ||serpiente.back().y==LINES){
-		return true;//Colision bordes
-	}
-	//Se muerde ella misma ?
-	for (auto elemento=serpiente.begin();elemento!=serpiente.end();elemento++){
-		if ((*elemento).x ==serpiente.back().x && (*elemento).y ==serpiente.back().y ){
-			return true;//Se muerde ella mista
-		}
-	}
-	*/
 	return false;
 }
+//-------------------------------------------------------------------------------------
 void imprimeSerpiente(vector <punto> serpiente){
 	//Imprime el vector serpiente exceptuando la cola que es vacio	
 	
 	while (!serpiente.empty()){
-		mvwprintw (stdscr,serpiente.back().y,serpiente.back().x, serpiente.size()>1 ?"#":" ");
+		mvwprintw (stdscr,serpiente.back().y,serpiente.back().x, serpiente.size()>1 ? CUERPO:" ");
 		serpiente.pop_back();
 	}
 	//refresh();
 }
-
+//-------------------------------------------------------------------------------------
+//vector<punto> inicializaSerpiente(vector  <punto> serpiente){
+void inicializaSerpiente(vector  <punto> *serpiente){
+	//Inicializa el cuerpo de la serpiente inicial , 3 segmentos
+	serpiente->clear();
+	serpiente->push_back({LINES/2,COLS/2+1});//Elemento 1
+	serpiente->push_back({LINES/2,COLS/2});//Elemento 2
+	serpiente->push_back({LINES/2,COLS/2-1});//Elemento 3	
+	
+	//return serpiente;
+}
+//-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 int main(){	
 	srand (time(NULL));//Inicializa numeros aleatorios para crear comida 
-	vector  <punto> serpiente;
-	int direccion(KEY_RIGHT);//Direccion inicial de la serpiente derecha
+	vector  <punto> serpiente;//Cuerpo de la serpiente ,compuesto de puntos y,x
+	int direccion(KEY_RIGHT);//Direccion serpiente  inicialmente derecha
 	int key(KEY_RIGHT) ;//Lectura de teclas
-	int puntos(1);
-	punto cabeza;//Un punto y,x que contiene la cabeza de la serpiente
-	punto comida;//donde esta la comida
+	int puntos(1);//Puntos del jugador , cada comida incrementa los puntos
+	punto cabeza;//Cabeza de la serpiente punto y,x con la posicion actual
+	punto comida;//Comida coordenada y,x actual
 	
 	initscr();//Inicio de ncurses , el entorno grafico
 	//configuraciones varias de ncurses 
@@ -102,54 +104,58 @@ int main(){
 
 	//Crea la serpiente con 3 elementos y le da una direccion
 
+	/*
 	serpiente.push_back({LINES/2,COLS/2+1});//Elemento 1
 	serpiente.push_back({LINES/2,COLS/2});//Elemento 2
 	serpiente.push_back({LINES/2,COLS/2-1});//Elemento 3	
+	*/
+	//serpiente=inicializaSerpiente(serpiente);
+	inicializaSerpiente(&serpiente);
 	
-
 	pantalla();//Imprime los bordes de la pantalla
-	comida=crea_comida (serpiente);
+	comida=creaComida (serpiente);
+
 	while (true){//Bucle principal del juego 
 		
-		usleep(200000);//Retardo del movimiento de la serpiente
+		usleep(RETARDO);//Retardo del movimiento de la serpiente
 		key = wgetch(stdscr);//Lectura de teclas 
 
-		//Solo acepta flechas en el cambio de direccion de la serpiente
+		//Solo acepta teclas flechas en el cambio de direccion de la serpiente
         if (key ==KEY_RIGHT || key ==KEY_LEFT || key ==KEY_DOWN || key ==KEY_UP){
 			direccion = key;}
            
 		//mvwprintw(stdscr,2,2,(to_string(direccion)).c_str());//DEBUG TECLA PULSADA
       	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto 
-     
-      	
+           	
       	mvwprintw( stdscr , 0, 2 , ( to_string (puntos).c_str() ));//MUESTRA PUNTOS CONSEGUIDOS comidas    
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		
-		switch (direccion){	//Direccion y manipulacion de la cabeza			
+		switch (direccion){	//Direccion y manipulacion de la cabeza	por las FLECHAS		
 			case KEY_RIGHT:cabeza={cabeza.y,cabeza.x+1}; break;//valor direccion 261
 			case KEY_LEFT:cabeza={cabeza.y,cabeza.x-1}; break;//valor direccion 260
 			case KEY_DOWN:cabeza={cabeza.y+1,cabeza.x}; break;//valor direccion 258
 			case KEY_UP:cabeza={cabeza.y-1,cabeza.x}; break;//valor direccion 259									
 		}
+				
+		mvwprintw (stdscr,comida.y,comida.x,COMIDA);//Visualiza comida	
 		
-		
-		mvwprintw (stdscr,comida.y,comida.x,"$");//Visualiza comida	
-		
-		if (muerta(cabeza)){//Antes de pegar la cabeza miramos si va estar en un mal sitio
-			puntos=0;
-		}
-     				
-		
+		if (estaMuerta(cabeza)){
+			pantalla();
+			inicializaSerpiente(&serpiente);
+			direccion=KEY_RIGHT;
+			comida=creaComida(serpiente);//Crea una nueva comida
+			puntos=0;}//Antes de pegar la cabeza miramos si va estar en un mal sitio
+     	else{				
 			
-		serpiente.push_back(cabeza);//Pegamos la nueva cabeza , un nuevo elemento
-		imprimeSerpiente(serpiente);//Imprime la serpiente			
-		serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
+			serpiente.push_back(cabeza);//Pegamos la nueva cabeza de la serpiente, un nuevo elemento
+			imprimeSerpiente(serpiente);//Imprime el cuerpo de la serpiente			
+			serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
+		}
 		
-
-		
-		if (come(cabeza,comida)){
+		/*La serpiente ha encontrado comida */
+		if (serpienteCome(cabeza,comida)){//La cabeza ha encontrado comida 
 			puntos++;//Incrementa puntos
-			comida=crea_comida(serpiente);//Crea una nueva comida
+			comida=creaComida(serpiente);//Crea una nueva comida
 			serpiente.push_back(cabeza);//La serpiente crece un elemento mas
 		}
 
