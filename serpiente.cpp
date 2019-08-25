@@ -29,7 +29,7 @@ punto crea_comida(vector <punto> &serpiente){
 	/*Crea la comida de la serpiente mirando de no caer en la serpiente o el borde */	
 	punto pto;
 	do {
-		pto={2+ rand() % (LINES-2),2+ rand() % (COLS-2) };//Crea una comida aleatoria
+		pto={2+ rand() % (LINES-3),2+ rand() % (COLS-3) };//Crea una comida aleatoria
 	}
 		while (mvinch(pto.y, pto.x)& A_CHARTEXT!=32);
 
@@ -45,21 +45,33 @@ bool come(punto &cabeza,punto &comida){//Ha comido ?
 	return false;
 }
 
-bool muerta(vector <punto> serpiente){
+bool muerta(punto &cabeza){
 	//Choca con ella misma o los limites del juego
 	//Mira la cabeza
 	//Ha colisionado con los extremos ?
+	
+	//La cabeza esta en un sitio que no es espacio o comida ???
+	//Hay que preveer 
+	
+	char objeto=mvinch(cabeza.y, cabeza.x)& A_CHARTEXT;//Cabeza
+	if ( objeto!=' ' && objeto !='$'){
+		return true;
+	}
+	
+	
+	
+	/*
 	if (serpiente.back().x==0 ||serpiente.back().x==COLS ||
 		serpiente.back().y==0 ||serpiente.back().y==LINES){
 		return true;//Colision bordes
 	}
 	//Se muerde ella misma ?
 	for (auto elemento=serpiente.begin();elemento!=serpiente.end();elemento++){
-		if (*(elemento).x==serpiente.back().x && *(elemento).y==serpiente.back()->y){
+		if ((*elemento).x ==serpiente.back().x && (*elemento).y ==serpiente.back().y ){
 			return true;//Se muerde ella mista
 		}
 	}
-	
+	*/
 	return false;
 }
 void imprimeSerpiente(vector <punto> serpiente){
@@ -77,7 +89,7 @@ int main(){
 	vector  <punto> serpiente;
 	int direccion(KEY_RIGHT);//Direccion inicial de la serpiente derecha
 	int key(KEY_RIGHT) ;//Lectura de teclas
-	int puntos(0);
+	int puntos(1);
 	punto cabeza;//Un punto y,x que contiene la cabeza de la serpiente
 	punto comida;//donde esta la comida
 	
@@ -108,6 +120,7 @@ int main(){
            
 		//mvwprintw(stdscr,2,2,(to_string(direccion)).c_str());//DEBUG TECLA PULSADA
       	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto 
+     
       	
       	mvwprintw( stdscr , 0, 2 , ( to_string (puntos).c_str() ));//MUESTRA PUNTOS CONSEGUIDOS comidas    
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
@@ -120,20 +133,26 @@ int main(){
 		}
 		
 		
-		mvwprintw (stdscr,comida.y,comida.x,"$");//Visualiza comida		
+		mvwprintw (stdscr,comida.y,comida.x,"$");//Visualiza comida	
+		
+		if (muerta(cabeza)){//Antes de pegar la cabeza miramos si va estar en un mal sitio
+			puntos=0;
+		}
+     				
+		
+			
 		serpiente.push_back(cabeza);//Pegamos la nueva cabeza , un nuevo elemento
 		imprimeSerpiente(serpiente);//Imprime la serpiente			
 		serpiente.erase(serpiente.begin());//Borra primer elemento del vector, la cola 
 		
-		if (muerta(serpiente)){
-			puntos=0;
-		}
+
 		
 		if (come(cabeza,comida)){
 			puntos++;//Incrementa puntos
 			comida=crea_comida(serpiente);//Crea una nueva comida
 			serpiente.push_back(cabeza);//La serpiente crece un elemento mas
 		}
+
 
 		//pantalla();//Imprime la pantalla
 	}
