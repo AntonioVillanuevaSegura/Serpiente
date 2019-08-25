@@ -127,7 +127,7 @@ int main(){
 		//mvwprintw(stdscr,2,2,(to_string(direccion)).c_str());//DEBUG TECLA PULSADA
       	//mvwprintw( stdscr , 2 , 2 , ( to_string (mvinch(1, 1)& A_CHARTEXT)).c_str() );//DEBUG lectura un punto 
            	
-      	mvwprintw( stdscr , 0, 2 , ( to_string (puntos).c_str() ));//MUESTRA PUNTOS CONSEGUIDOS comidas    
+      	mvwprintw( stdscr , 0, 2 , ( ( "SCORE : " + to_string (puntos) ).c_str() ));//MUESTRA PUNTOS CONSEGUIDOS comidas    
 		cabeza=serpiente.back();//Recupera la cabeza de la serpiente
 		
 		switch (direccion){	//Direccion y manipulacion de la cabeza	por las FLECHAS		
