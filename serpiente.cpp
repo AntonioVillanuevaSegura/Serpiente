@@ -4,7 +4,7 @@
  * JUEGO DE LA SERPIENTE ,SNAKE empleando ncurses y linux
  * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
  * instalar ncurses  sudo apt-get install libncurses5-dev libncursesw5-dev
- * compile and link: gcc <program file> -lncurses
+ * g++ -std=c++11 -o serpiente serpiente.cpp -lncurses
  */
 #include <iostream>
 #include <string>
