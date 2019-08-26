@@ -1,7 +1,7 @@
 
 /*
  * Antonio Villanueva Segura 
- * JUEGO DE LA SERPIENTE ,SNAKE empleando ncurses y linux
+ * JUEGO DE LA SERPIENTE ,SNAKE empleando ncurses y linux version compilada en UBUNTU 16.04 64BITS
  * http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
  * instalar ncurses  sudo apt-get install libncurses5-dev libncursesw5-dev
  * g++ -std=c++11 -o serpiente serpiente.cpp -lncurses
@@ -30,7 +30,7 @@ void pantalla(){
 }
 //-------------------------------------------------------------------------------------
 punto creaComida(vector <punto> &serpiente){
-	/*Crea comida , evitando limites o el cuerpo de la serpiente  */	
+	//Crea comida , evitando limites o el cuerpo de la serpiente
 	punto pto;
 	do {
 		pto={2+ rand() % (LINES-3),2+ rand() % (COLS-3) };//Crea una comida aleatoria
@@ -39,7 +39,8 @@ punto creaComida(vector <punto> &serpiente){
 	return pto;
 }
 //-------------------------------------------------------------------------------------
-bool serpienteCome(punto &cabeza,punto &comida){//La serpiente ha encontrado comida ? verdadero o falso
+bool serpienteCome(punto &cabeza,punto &comida){
+	//La serpiente ha encontrado comida ? verdadero o falso
 	if (cabeza.y==comida.y && cabeza.x==comida.x ){
 		return true;
 	}
@@ -56,8 +57,7 @@ bool estaMuerta(punto &cabeza){
 }
 //-------------------------------------------------------------------------------------
 void imprimeSerpiente(vector <punto> serpiente){
-	//Imprime el vector serpiente exceptuando la cola que es vacio	
-	
+	//Imprime el vector serpiente exceptO la cola que es vacio		
 	while (!serpiente.empty()){
 		mvwprintw (stdscr,serpiente.back().y,serpiente.back().x, serpiente.size()>1 ? CUERPO:" ");
 		serpiente.pop_back();
