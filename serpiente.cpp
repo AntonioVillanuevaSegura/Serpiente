@@ -79,7 +79,7 @@ int main(){
 	vector  <punto> serpiente;//Cuerpo de la serpiente ,compuesto de puntos y,x
 	int direccion(KEY_RIGHT);//Direccion serpiente  inicialmente derecha
 	int key(KEY_RIGHT) ;//Lectura de teclas
-	int puntos(1);//Puntos del jugador , cada comida incrementa los puntos
+	int puntos(0);//Puntos del jugador , cada comida incrementa los puntos
 	punto cabeza;//Cabeza de la serpiente punto y,x con la posicion actual
 	punto comida;//Comida coordenada y,x actual
 	
