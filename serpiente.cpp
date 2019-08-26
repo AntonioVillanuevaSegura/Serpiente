@@ -19,7 +19,7 @@
 #define CUERPO "O"
 #define COMIDA "+"
 using namespace std;
-
+//-------------------------------------------------------------------------------------
 struct punto {int y;int x;}; //Estructura Definiendo un punto una coordenada y,x
 //-------------------------------------------------------------------------------------
 void pantalla(){
