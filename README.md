@@ -5,4 +5,5 @@
 
 https://youtu.be/oCS1-wZ2vYM
 
-https://github.com/AntonioVillanuevaSegura/Serpiente/blob/master/Serpiente.png
+![alt tag](https://github.com/AntonioVillanuevaSegura/Serpiente/blob/master/Serpiente.png)
+
