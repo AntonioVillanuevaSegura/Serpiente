@@ -64,7 +64,6 @@ void imprimeSerpiente(vector <punto> serpiente){
 	}
 }
 //-------------------------------------------------------------------------------------
-//vector<punto> inicializaSerpiente(vector  <punto> serpiente){
 void inicializaSerpiente(vector  <punto> *serpiente){
 	//Inicializa el cuerpo de la serpiente inicial , 3 segmentos
 	serpiente->clear();
