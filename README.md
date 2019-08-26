@@ -4,3 +4,5 @@
 (ENG)The old snake game using a simple graphic library, ncurses to the c ++ sauce linearly.
 
 https://youtu.be/oCS1-wZ2vYM
+
+https://github.com/AntonioVillanuevaSegura/Serpiente/blob/master/Serpiente.png
