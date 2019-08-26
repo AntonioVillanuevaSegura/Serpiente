@@ -1,3 +1,4 @@
+
 /*
  * Antonio Villanueva Segura 
  * JUEGO DE LA SERPIENTE ,SNAKE empleando ncurses y linux
@@ -67,9 +68,9 @@ void imprimeSerpiente(vector <punto> serpiente){
 void inicializaSerpiente(vector  <punto> *serpiente){
 	//Inicializa el cuerpo de la serpiente inicial , 3 segmentos
 	serpiente->clear();
-	serpiente->push_back({LINES/2,COLS/2+1});//Elemento 1
-	serpiente->push_back({LINES/2,COLS/2});//Elemento 2
-	serpiente->push_back({LINES/2,COLS/2-1});//Elemento 3	
+	for (int elemento=1;elemento>=-1;elemento--){
+		serpiente->push_back({LINES/2,COLS/2+elemento});//Elementos 1 0 -1 
+	}
 }
 //-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
